@@ -12,11 +12,18 @@ export SING_WD="/work"
 #bt2 mapping directory for singularity container
 export SING_BT2="/bt2"
 
+#Virsorter db
+export VSDATA="/rsgrps/bhurwitz/hurwitzlab/data/virsorter-data"
 
 #Reference data
 export REF_DIR="/rsgrps/bhurwitz/hurwitzlab/data/reference"
 #Patric bacteria
-export GENOME_DIR="$REF_DIR/patric_bacteria"
+export GENOME_DIR="$REF_DIR/patric_genomes"
+#complete genomes
+export COMPLETE="$GENOME_DIR/complete"
+#wgs genomes
+export WGS="$GENOME_DIR/wgs"
+
 export BT2_DIR="$REF_DIR/patric_bowtie2_index"
 #patric metadata including genome_lineage
 export META_DIR="$REF_DIR/patric_metadata"
