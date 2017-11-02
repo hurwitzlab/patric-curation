@@ -1,0 +1,56 @@
+#!/usr/bin/env ipython
+
+#This script is intended to take a list of 100 patric genomes
+#Submit them to Phaster web api
+#Wait 5 minutes
+#Check to see if they're all done
+#Wait another 5 minutes ... and repeat
+#The "worker" bash script should just be splitting up the job array
+#The "launcher" in the scripts dir should be checking for .zip results from phaster
+#and then building a list of genomes that still need to be submitted
+
+import json
+import requests
+import time
+
+print "Start Time : %s" % time.ctime()
+
+jobIds = ("ZZ_068033f817","ZZ_068033f817")
+statuses = []
+
+def checkstatus():
+    for jobid in jobIds:
+        statuses = []
+        r = requests.get('http://phaster.ca/phaster_api?acc='+jobid)
+        data = json.loads(r.text)
+        statuses.append(data['status'])
+        return statuses
+
+while statuses.count("Complete") != len(statuses):
+    time.sleep(300)
+    statuses = checkstatus()
+    continue
+else:
+    for jobid in jobIds:
+        r = requests.get('phaster.ca/submissions/'+jobid+'.zip', stream=True)
+        with open(data['job_id']+'.zip','wb') as fd:
+            for chunk in r.iter_content(chunk_size=128):
+                fd.write(chunk)
+print "End Time: %s" % time.ctime()        
+
+
+
+
+
+#In [37]: data.keys()
+#Out[37]: [u'status', u'url', u'job_id', u'zip', u'summary']
+
+
+
+#!export FILE="../520.613.fna"
+#
+#!wget --post-file="$FILE" "http://phaster.ca/phaster_api" -O Output_filename
+#
+#!sleep 5
+#
+#!wget --post-file="../520.613.fna" "http://phaster.ca/phaster_api" -O Output_filename
