@@ -23,6 +23,8 @@ export GENOME_DIR="$REF_DIR/patric_genomes"
 export COMPLETE="$GENOME_DIR/complete"
 #wgs genomes
 export WGS="$GENOME_DIR/wgs"
+#GFFS (needed for prophET)
+export GFFS="$REF_DIR/patric_annot/gff"
 
 export BT2_DIR="$REF_DIR/patric_bowtie2_index"
 #patric metadata including genome_lineage

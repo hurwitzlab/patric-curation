@@ -102,3 +102,7 @@ ENV/
 *.fna
 *.fa
 *.fasta
+*.gff
+*.temp
+temp2
+if_it_was_ncbi
