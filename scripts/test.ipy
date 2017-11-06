@@ -1,0 +1,7 @@
+#!/usr/bin/env ipython
+
+#for the following magic command to work
+#you have to execute this like:"ipython test.ipy"
+
+
+!ls

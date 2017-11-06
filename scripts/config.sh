@@ -6,14 +6,14 @@ export PRJ_DIR="/rsgrps/bhurwitz/scottdaniel/patric-curation"
 export WORKER_DIR="$SCRIPT_DIR/workers"
 
 # IMPORTANT VARIABLES YOU NEED TO SET, YES YOU! 
-export SING_IMG="/rsgrps/bhurwitz/scottdaniel/singularity-images"
-# Name of working directory within singularity image that will be mapped to SRA_DIR
-export SING_WD="/work"
-#bt2 mapping directory for singularity container
-export SING_BT2="/bt2"
+#export SING_IMG="/rsgrps/bhurwitz/scottdaniel/singularity-images"
+## Name of working directory within singularity image that will be mapped to SRA_DIR
+#export SING_WD="/work"
+##bt2 mapping directory for singularity container
+#export SING_BT2="/bt2"
 
 #Virsorter db
-export VSDATA="/rsgrps/bhurwitz/hurwitzlab/data/virsorter-data"
+#export VSDATA="/rsgrps/bhurwitz/hurwitzlab/data/virsorter-data"
 
 #Reference data
 export REF_DIR="/rsgrps/bhurwitz/hurwitzlab/data/reference"
@@ -23,12 +23,21 @@ export GENOME_DIR="$REF_DIR/patric_genomes"
 export COMPLETE="$GENOME_DIR/complete"
 #wgs genomes
 export WGS="$GENOME_DIR/wgs"
-#GFFS (needed for prophET)
-export GFFS="$REF_DIR/patric_annot/gff"
+#phaster reports
+export PHASTER_DIR="$GENOME_DIR/phaster_out"
 
-export BT2_DIR="$REF_DIR/patric_bowtie2_index"
+#test in
+export TEST_IN_DIR="$PRJ_DIR/test_genomes"
+
+#test out
+export TEST_OUT_DIR="$PRJ_DIR/test_phaster_out"
+
+#GFFS (needed for prophET)
+#export GFFS="$REF_DIR/patric_annot/gff"
+
+#export BT2_DIR="$REF_DIR/patric_bowtie2_index"
 #patric metadata including genome_lineage
-export META_DIR="$REF_DIR/patric_metadata"
+#export META_DIR="$REF_DIR/patric_metadata"
 
 ###############################
 #FUNCTIONS#####################
