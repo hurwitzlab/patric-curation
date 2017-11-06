@@ -1,4 +1,4 @@
-#!/usr/bin/env ipython
+#!/usr/bin/env python
 
 #This script is intended to take a list of 100 patric genomes
 #Submit them to Phaster web api
@@ -6,39 +6,77 @@
 #Check to see if they're all done
 #Wait another 5 minutes ... and repeat
 #The "worker" bash script should just be splitting up the job array
+#and will call this script like so: ipython Phaster.ipy -i $FASTA -o $OUT
 #The "launcher" in the scripts dir should be checking for .zip results from phaster
 #and then building a list of genomes that still need to be submitted
 
+from __future__ import print_function
 import json
 import requests
 import time
+import argparse
+import sys
 
-print "Start Time : %s" % time.ctime()
+#arguments
+if __name__ == "__main__":
+    parser = \
+    argparse.ArgumentParser(description="Script to take a fasta file\
+	1) Submit it to phaster.ca webapi\
+	2) And wait a few minutes for results")
+    parser.add_argument("-i", "--input", action="store", \
+        help="Fasta file input")
+    parser.add_argument("-o", "--outPath", action="store", default="./phaster-results.zip", \
+        help="(OPTIONAL) Output path where phaster result zip file will be put\
+        Default: ./phaster-results.zip")
+    
+    args = vars(parser.parse_args())
 
-jobIds = ("ZZ_068033f817","ZZ_068033f817")
-statuses = []
+#thing to print help if no arguments given
+if len(sys.argv)==1:
+    parser.print_help()
+    sys.exit(0)
 
-def checkstatus():
-    for jobid in jobIds:
-        statuses = []
-        r = requests.get('http://phaster.ca/phaster_api?acc='+jobid)
-        data = json.loads(r.text)
-        statuses.append(data['status'])
-        return statuses
+#setting input
+fileIn = open(args["input"],"r") 
 
-while statuses.count("Complete") != len(statuses):
+print("Start Time {:s}".format(time.ctime()))
+
+status = ""
+
+#funciton that submits the file and gets the job_id back form the phaster server
+def submitToPhaster(filehandle):
+    r = requests.post('http://phaster.ca/phaster_api',filehandle)
+    data = json.loads(r.text)
+    status = data['job_id']
+    print("Got the jobid of {:s}".format(status))
+    return status
+
+#function that checks the status of the job_id
+def checkstatus(jobid):
+    r = requests.get('http://phaster.ca/phaster_api?acc='+jobid)
+    data = json.loads(r.text)
+    status = data['status']
+    print("The status is {:s}".format(status))
+    return status
+
+#the main loop, submits the file, waits five minutes, checks and downloads if complete
+while status != "Complete":
+    jobid = submitToPhaster(fileIn)
+    print("Waiting 5 minutes")
     time.sleep(300)
-    statuses = checkstatus()
+    status = checkstatus(jobid)
     continue
 else:
-    for jobid in jobIds:
-        r = requests.get('phaster.ca/submissions/'+jobid+'.zip', stream=True)
-        with open(data['job_id']+'.zip','wb') as fd:
-            for chunk in r.iter_content(chunk_size=128):
-                fd.write(chunk)
-print "End Time: %s" % time.ctime()        
+    r = requests.get('http://phaster.ca/submissions/'+jobid+'.zip', stream=True)
+    with open(jobid+'.zip','wb') as outPath:
+        for chunk in r.iter_content(chunk_size=128):
+            outPath.write(chunk)
 
 
+print("End Time {:s}".format(time.ctime()))
+
+fileIn.close()
+outPath.close()
 
 
 
