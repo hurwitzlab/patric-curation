@@ -106,3 +106,4 @@ ENV/
 *.temp
 temp2
 if_it_was_ncbi
+test*

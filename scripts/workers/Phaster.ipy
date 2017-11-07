@@ -16,18 +16,24 @@ import requests
 import time
 import argparse
 import sys
+import zipfile
 
 #arguments
 if __name__ == "__main__":
     parser = \
-    argparse.ArgumentParser(description="Script to take a fasta file\
-	1) Submit it to phaster.ca webapi\
-	2) And wait a few minutes for results")
+    argparse.ArgumentParser(description="Script to take a fasta file \
+	1) Submit it to phaster.ca webapi \
+        2) And wait a few minutes for results")
     parser.add_argument("-i", "--input", action="store", \
         help="Fasta file input")
-    parser.add_argument("-o", "--outPath", action="store", default="./phaster-results.zip", \
-        help="(OPTIONAL) Output path where phaster result zip file will be put\
-        Default: ./phaster-results.zip")
+    parser.add_argument("-o", "--outPath", action="store", default="./", \
+        help="(OPTIONAL) Output path where phaster result zip file will be put. \
+        Default: Current directory")
+    parser.add_argument("-s", "--saveAs", action="store", \
+        help="(OPTIONAL) Save the retrieved zip file of results with custom name. \
+        Default: Name of submitted fasta with .fna replaced with .zip")
+    parser.add_argument("-x", "--extract", action="store_true", \
+        help="(OPTIONAL) Extract the resultant zip file into a directory with the name of the submitted fasta? Default: False")
     
     args = vars(parser.parse_args())
 
@@ -37,7 +43,15 @@ if len(sys.argv)==1:
     sys.exit(0)
 
 #setting input
-fileIn = open(args["input"],"r") 
+fileIn = open(args['input'],'r') 
+
+if args['saveAs'] == None:
+    fileNameOut = args['input'].split('/')[1].replace('fna','zip')
+else:
+    fileNameOut = args['saveAs']
+
+if args['extract'] == True:
+    extractDir = fileNameOut.replace('.zip','')
 
 print("Start Time {:s}".format(time.ctime()))
 
@@ -56,27 +70,35 @@ def checkstatus(jobid):
     r = requests.get('http://phaster.ca/phaster_api?acc='+jobid)
     data = json.loads(r.text)
     status = data['status']
-    print("The status is {:s}".format(status))
+    print("The job is {:s}".format(status))
     return status
 
 #the main loop, submits the file, waits five minutes, checks and downloads if complete
+jobid = submitToPhaster(fileIn)
+
 while status != "Complete":
-    jobid = submitToPhaster(fileIn)
     print("Waiting 5 minutes")
     time.sleep(300)
     status = checkstatus(jobid)
     continue
 else:
     r = requests.get('http://phaster.ca/submissions/'+jobid+'.zip', stream=True)
-    with open(jobid+'.zip','wb') as outPath:
+    with open(args['outPath']+fileNameOut,'wb') as fileOut:
         for chunk in r.iter_content(chunk_size=128):
-            outPath.write(chunk)
+            fileOut.write(chunk) #at the end of the stream file auto-closes
 
+#keep extraction process separate from main loop
+if args['extract'] == True: #NB: never extract a zipfile while its being streamed! have to close and then reopen
+    fileOut = open(fileOut.name,'r')
+    zip_ref = zipfile.ZipFile(fileOut)
+    zip_ref.extractall(args['outPath']+extractDir)
+    zip_ref.close()
+
+   
 
 print("End Time {:s}".format(time.ctime()))
 
 fileIn.close()
-outPath.close()
 
 
 
