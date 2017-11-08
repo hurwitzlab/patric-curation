@@ -59,9 +59,13 @@ status = ""
 
 #funciton that submits the file and gets the job_id back form the phaster server
 def submitToPhaster(filehandle):
-    print("Submitting {:s}".format(filehandle.name))
+    print("{:s} is submitting {:s}".format(sys.argv[0],filehandle.name))
     r = requests.post('http://phaster.ca/phaster_api',filehandle)
-    data = json.loads(r.text)
+    try:
+        data = json.loads(r.text)
+    except ValueError as err:
+        print("ValueError: {0}".format(err))
+        print("This is the r.text"+"\n"+r.text)
     status = data['job_id']
     print("Got the jobid of {:s}".format(status))
     return status

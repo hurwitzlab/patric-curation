@@ -31,7 +31,9 @@ while read FASTA; do
 
     FULLPATH=$COMPLETE_DIR/$FASTA
 
-    echo Submitting $FULLPATH
+    echo $0 is submitting $FULLPATH
+    echo $0 is outputting to $PHASTER_OUT_DIR
+    echo $0 is extracting resultant "$BASE".zip
 
     $WORKER_DIR/Phaster.ipy -i $FULLPATH -o $PHASTER_OUT_DIR -x
 
