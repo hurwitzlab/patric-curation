@@ -73,7 +73,11 @@ def submitToPhaster(filehandle):
 #function that checks the status of the job_id
 def checkstatus(jobid):
     r = requests.get('http://phaster.ca/phaster_api?acc='+jobid)
-    data = json.loads(r.text)
+    try:
+        data = json.loads(r.text)
+    except ValueError as err:
+        print("ValueError: {0}".format(err))
+        print("This is the r.text"+"\n"+r.text)
     status = data['status']
     print("The job is {:s}".format(status))
     return status
