@@ -20,17 +20,17 @@ export REF_DIR="/rsgrps/bhurwitz/hurwitzlab/data/reference"
 #Patric bacteria
 export GENOME_DIR="$REF_DIR/patric_genomes"
 #complete genomes
-export COMPLETE="$GENOME_DIR/complete"
+export COMPLETE_DIR="$GENOME_DIR/complete"
 #wgs genomes
-export WGS="$GENOME_DIR/wgs"
+export WGS_DIR="$GENOME_DIR/wgs"
 #phaster reports
-export PHASTER_DIR="$GENOME_DIR/phaster_out"
+export PHASTER_OUT_DIR="$GENOME_DIR/phaster_out"
 
 #test in
-export TEST_IN_DIR="$PRJ_DIR/test_genomes"
+#export TEST_IN_DIR="$PRJ_DIR/test_genomes"
 
 #test out
-export TEST_OUT_DIR="$PRJ_DIR/test_phaster_out"
+#export TEST_OUT_DIR="$PRJ_DIR/test_phaster_out"
 
 #GFFS (needed for prophET)
 #export GFFS="$REF_DIR/patric_annot/gff"
