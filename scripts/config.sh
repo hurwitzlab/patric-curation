@@ -1,7 +1,8 @@
 export CWD=$PWD
-export SCRIPT_DIR=$CWD
 #root project dir
 export PRJ_DIR="/rsgrps/bhurwitz/scottdaniel/patric-curation"
+#main scripts
+export SCRIPT_DIR="$PRJ_DIR/scripts"
 #where the worker scripts are (PBS batch scripts and their python/perl workdogs)
 export WORKER_DIR="$SCRIPT_DIR/workers"
 

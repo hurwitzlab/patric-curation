@@ -31,6 +31,8 @@ while read FASTA; do
 
     FULLPATH=$COMPLETE_DIR/$FASTA
 
+    echo Submitting $FULLPATH
+
     $WORKER_DIR/Phaster.ipy -i $FULLPATH -o $PHASTER_OUT_DIR -x
 
     if [ ! -e "$PHASTER_OUT_DIR"/"$BASE".zip ]; then
