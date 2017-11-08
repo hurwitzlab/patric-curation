@@ -59,11 +59,13 @@ NUM_FILES=$(lc $FILES_TO_PROCESS)
 
 echo \"Found $NUM_FILES to process\"
 
-#JOB=$(qsub -J 1-$NUM_FILES:$STEP_SIZE -V -N taxoner -j oe -o "$STDOUT_DIR" $WORKER_DIR/run-taxoner-se.sh)
-#
-#if [ $? -eq 0 ]; then
-#  echo Submitted job \"$JOB\" for you in steps of \"$STEP_SIZE.\" Remember: time you enjoy wasting is not wasted time.
-#else
-#  echo -e "\nError submitting job\n$JOB\n"
-#fi
-#
+JOB=$(qsub -J 1-$NUM_FILES:$STEP_SIZE -V -N phaster -j oe -o "$STDOUT_DIR" $WORKER_DIR/runPhaster.sh)
+
+if [ $? -eq 0 ]; then
+  echo "Submitted job \"$JOB\" for you in steps of \"$STEP_SIZE.\" A healthy male adult bore consumes each year one and a half times his weight
+  in other people\'s patience.
+          ― John Updike"
+else
+  echo -e "\nError submitting job\n$JOB\n"
+fi
+
