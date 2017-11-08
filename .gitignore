@@ -110,3 +110,4 @@ test*
 fna_files
 todo_list
 out/
+temp*

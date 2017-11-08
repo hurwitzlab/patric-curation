@@ -21,39 +21,43 @@ else
 fi
 
 #doing complete genomes first ~9,000 / 100 = 90 subjobs 
-cd "$COMPLETE_DIR"
+#
+#export FILES_LIST="$PRJ_DIR/fna_files"
+#
+#echo "Finding genomes"
+#
+#find $COMPLETE_DIR -type f -iname "*.fna" | sed "s/^\.\///" > $FILES_LIST 
+#
+#echo "Checking if already processed"
+#
+#if [ -e $PRJ_DIR/todo_list ]; then
+#    rm $PRJ_DIR/todo_list
+#fi
+#
+#export FILES_TO_PROCESS="$PRJ_DIR/todo_list"
+#
+#while read FASTA; do
+#    
+#    BASE=$(basename $FASTA .fna)
+#
+#    OUT_DIR=$PHASTER_OUT_DIR/$BASE
+#
+#    if [[ -d $OUT_DIR ]]; then
+#        if [[ -z $(find $OUT_DIR -iname detail.txt) ]]; then
+#            echo $FASTA >> $FILES_TO_PROCESS
+#        else
+#            continue
+#        fi
+#    else
+#        echo $FASTA >> $FILES_TO_PROCESS
+#    fi
+#
+#done < $FILES_LIST
+#
 
-export FILES_LIST="$PRJ_DIR/fna_files"
+#temporary testing for commented out lines 23-56
 
-echo "Finding genomes"
-
-find . -type f -iname "*.fna" | sed "s/^\.\///" > $FILES_LIST 
-
-echo "Checking if already processed"
-
-if [ -e $PRJ_DIR/todo_list ]; then
-    rm $PRJ_DIR/todo_list
-fi
-
-export FILES_TO_PROCESS="$PRJ_DIR/todo_list"
-
-while read FASTA; do
-    
-    BASE=$(basename $FASTA .fna)
-
-    OUT_DIR=$PHASTER_OUT_DIR/$BASE
-
-    if [[ -d $OUT_DIR ]]; then
-        if [[ -z $(find $OUT_DIR -iname detail.txt) ]]; then
-            echo $FASTA >> $FILES_TO_PROCESS
-        else
-            continue
-        fi
-    else
-        echo $FASTA >> $FILES_TO_PROCESS
-    fi
-
-done < $FILES_LIST
+export FILES_TO_PROCESS="$PRJ_DIR/temp_todo_list"
 
 NUM_FILES=$(lc $FILES_TO_PROCESS)
 
