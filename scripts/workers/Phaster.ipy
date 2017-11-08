@@ -46,9 +46,11 @@ if len(sys.argv)==1:
 fileIn = open(args['input'],'r') 
 
 if args['saveAs'] == None:
-    fileNameOut = args['input'].split('/')[1].replace('fna','zip')
+    fileNameOut = args['input'].split('/')[-1].replace('fna','zip')
+#    print("fileNameOut is {:s}".format(fileNameOut))
 else:
     fileNameOut = args['saveAs']
+#    print("fileNameOut is {:s}".format(fileNameOut))
 
 if args['extract'] == True:
     extractDir = fileNameOut.replace('.zip','')
@@ -92,7 +94,8 @@ while status != "Complete":
     continue
 else:
     r = requests.get('http://phaster.ca/submissions/'+jobid+'.zip', stream=True)
-    with open(args['outPath']+fileNameOut,'wb') as fileOut:
+    print("Saving {:s} to {:s}".format(fileNameOut,args['outPath']))
+    with open(args['outPath']+'/'+fileNameOut,'wb') as fileOut:
         for chunk in r.iter_content(chunk_size=128):
             fileOut.write(chunk) #at the end of the stream file auto-closes
 
@@ -100,7 +103,7 @@ else:
 if args['extract'] == True: #NB: never extract a zipfile while its being streamed! have to close and then reopen
     fileOut = open(fileOut.name,'r')
     zip_ref = zipfile.ZipFile(fileOut)
-    zip_ref.extractall(args['outPath']+extractDir)
+    zip_ref.extractall(args['outPath']+'/'+extractDir)
     zip_ref.close()
 
    
