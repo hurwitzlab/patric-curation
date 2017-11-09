@@ -37,11 +37,11 @@ while read FASTA; do
 
     $WORKER_DIR/Phaster.ipy -i $FULLPATH -o $PHASTER_OUT_DIR -x
 
-    if [ ! -e "$PHASTER_OUT_DIR"/"$BASE".zip ]; then
-        echo Something went majorly wrong and didnt even make a zipfile
-        echo Exiting before breaking anything further \(and wasting time\)
-        exit 1
-    fi
+#    if [ ! -e "$PHASTER_OUT_DIR"/"$BASE".zip ]; then
+#        echo Something went majorly wrong and didnt even make a zipfile
+#        echo Exiting before breaking anything further \(and wasting time\)
+#        exit 1
+#    fi
    
 done < "$TMP_FILES"
 
